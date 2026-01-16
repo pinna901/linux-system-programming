@@ -1,0 +1,4 @@
+server
+myshell
+*.o
+__pycache__/
