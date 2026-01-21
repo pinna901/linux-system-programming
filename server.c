@@ -14,7 +14,7 @@ void handle_client(int client_socket);
 
 void *thread_function(void *arg) {
 	//1.acquiring input socket
-	//arg type convertt
+	//arg type convert
 	int client_socket = *((int *)arg);
 	//free malloc mem
 	free(arg);
@@ -87,14 +87,14 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    // 设置 Socket 选项，允许端口复用 (防止杀掉进程后端口被占用)
+    //rnable port being recycled by former socket
     int opt = 1;
     if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt))) {
         perror("setsockopt");
         exit(EXIT_FAILURE);
     }
 
-    // 2. 绑定 (Bind) IP 和端口
+    // 2. bind port and IP of server_fd before
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY; // 监听所有网卡接口
     address.sin_port = htons(PORT);       // 端口号转为网络字节序
@@ -104,8 +104,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    // 3. 监听 (Listen)
-    // 3 表示等待队列的最大长度
+    // 3. Listen--where 3 handshakes happen
     if (listen(server_fd, 3) < 0) {
         perror("Listen failed");
         exit(EXIT_FAILURE);
